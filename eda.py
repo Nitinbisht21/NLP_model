@@ -1,28 +1,34 @@
-"""
-eda.py
-Quick exploratory data analysis: class balance, text length distribution, vocabulary size.
-Run this after loading data to sanity-check it before modeling.
-"""
-
-import pandas as pd
 from data_loader import load_imdb_csv
 from preprocessing import preprocess_series
 
 
-def run_eda(df: pd.DataFrame):
+def run_eda(df):
+    """Print simple information about the dataset."""
     print("=" * 50)
     print("DATASET OVERVIEW")
     print("=" * 50)
-    print(f"Total documents: {len(df)}")
-    print(f"\nClass balance:\n{df['label'].value_counts()}")
 
-    df["word_count"] = df["text"].apply(lambda t: len(t.split()))
-    print(f"\nText length (words) stats:\n{df['word_count'].describe()}")
+    print("Total reviews:", len(df))
 
-    print("\nCleaning a sample and checking vocabulary size...")
-    cleaned = preprocess_series(df["text"].head(200))  # sample for speed
-    vocab = set(" ".join(cleaned).split())
-    print(f"Vocabulary size (sample of 200 docs): {len(vocab)}")
+    print("\nSentiment count:")
+    print(df["label"].value_counts())
+
+    df["word_count"] = df["text"].apply(count_words)
+
+    print("\nReview length details:")
+    print(df["word_count"].describe())
+
+    print("\nCleaning first 200 reviews...")
+    cleaned_reviews = preprocess_series(df["text"].head(200))
+    all_words = " ".join(cleaned_reviews).split()
+    unique_words = set(all_words)
+
+    print("Unique words in first 200 cleaned reviews:", len(unique_words))
+
+
+def count_words(text):
+    """Count words in one review."""
+    return len(text.split())
 
 
 if __name__ == "__main__":

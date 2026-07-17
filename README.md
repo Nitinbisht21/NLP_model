@@ -10,13 +10,19 @@ pip install -r requirements.txt
 - `preprocessing.py` - cleans text: lowercase, strip HTML, remove punctuation/numbers, tokenize, remove stopwords
 - `eda.py` - quick exploratory analysis: class balance, text length stats, vocab size
 
-The code uses the downloaded IMDB dataset directly.
+The code is kept simple for learning. It uses the downloaded IMDB dataset directly.
 
 ## Try it now
 ```bash
 python eda.py
 ```
 This loads `IMDB Dataset.csv` and prints class balance plus text stats.
+
+## Useful Functions
+- `load_imdb_csv()` - loads the dataset
+- `clean_text()` - cleans one review
+- `preprocess_series()` - cleans many reviews
+- `split_data()` - splits data into train and test parts
 
 ## Dataset
 1. Download `IMDB Dataset.csv` from [Kaggle: IMDB Dataset of 50K Movie Reviews](https://www.kaggle.com/datasets/lakshmi25npathi/imdb-dataset-of-50k-movie-reviews).
