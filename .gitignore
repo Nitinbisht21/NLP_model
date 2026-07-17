@@ -1,28 +1,9 @@
-# Data (too large / not ours to redistribute; link in README instead)
-data/*.csv
-data/*.json
-*.csv
+# Dataset file
+IMDB Dataset.csv
 
-# Python
+# Python cache
 __pycache__/
 *.pyc
-*.pyo
-venv/
-env/
-.venv/
 
-# Jupyter
-.ipynb_checkpoints/
-
-# Model artifacts (large files; regenerate via train.py instead)
-*.pkl
-*.h5
-*.pt
-*.pth
-models/*.bin
-
-# Environment/secrets
+# Local environment file
 .env
-
-# OS
-.DS_Store
