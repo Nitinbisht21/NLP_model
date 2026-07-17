@@ -5,7 +5,7 @@ Run this after loading data to sanity-check it before modeling.
 """
 
 import pandas as pd
-from data_loader import load_nltk_movie_reviews
+from data_loader import load_imdb_csv
 from preprocessing import preprocess_series
 
 
@@ -26,5 +26,5 @@ def run_eda(df: pd.DataFrame):
 
 
 if __name__ == "__main__":
-    df = load_nltk_movie_reviews()
+    df = load_imdb_csv()
     run_eda(df)

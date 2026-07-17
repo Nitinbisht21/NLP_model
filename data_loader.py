@@ -1,60 +1,42 @@
 """
 data_loader.py
-Loads sentiment data from one of two sources:
-1. NLTK's built-in movie_reviews corpus (quick start, no download needed, 2000 docs)
-2. Kaggle IMDB 50K Dataset CSV (main dataset for the project, download separately)
+Loads sentiment data from the downloaded Kaggle IMDB 50K Dataset CSV.
 
 Usage:
-    from data_loader import load_nltk_movie_reviews, load_imdb_csv
+    from data_loader import load_imdb_csv
 
-    df = load_nltk_movie_reviews()          # quick start, works offline
-    df = load_imdb_csv("data/IMDB_Dataset.csv")   # main dataset
+    df = load_imdb_csv()
 """
 
 import pandas as pd
-import random
+from pathlib import Path
 
 
-def load_nltk_movie_reviews() -> pd.DataFrame:
-    """
-    Loads NLTK's built-in movie_reviews corpus.
-    Good for quickly testing your pipeline before the full IMDB dataset arrives.
-    Returns a DataFrame with columns: ['text', 'label'] where label is 'positive'/'negative'.
-    """
-    import nltk
-    from nltk.corpus import movie_reviews
-
-    # Ensure corpus is available
-    try:
-        nltk.data.find("corpora/movie_reviews")
-    except LookupError:
-        nltk.download("movie_reviews")
-
-    docs = [
-        (movie_reviews.raw(fileid), category)
-        for category in movie_reviews.categories()
-        for fileid in movie_reviews.fileids(category)
-    ]
-    random.seed(42)
-    random.shuffle(docs)
-
-    df = pd.DataFrame(docs, columns=["text", "label"])
-    # NLTK uses 'pos'/'neg' -> normalize to match IMDB dataset labels
-    df["label"] = df["label"].map({"pos": "positive", "neg": "negative"})
-    return df
+DEFAULT_IMDB_PATH = Path(__file__).resolve().parent / "IMDB Dataset.csv"
 
 
-def load_imdb_csv(path: str) -> pd.DataFrame:
+def load_imdb_csv(path: str | Path = DEFAULT_IMDB_PATH) -> pd.DataFrame:
     """
     Loads the Kaggle "IMDB Dataset of 50K Movie Reviews" CSV.
     Download from: https://www.kaggle.com/datasets/lakshmi25npathi/imdb-dataset-of-50k-movie-reviews
-    Place the CSV at the given path (e.g., data/IMDB_Dataset.csv).
+    Place the CSV at the given path, or in the project root as 'IMDB Dataset.csv'.
 
     Expected columns in the raw CSV: 'review', 'sentiment'
     Returns a DataFrame with columns: ['text', 'label']
     """
+    path = Path(path)
+    if not path.exists():
+        raise FileNotFoundError(
+            f"Could not find IMDB dataset at {path}. "
+            "Pass the CSV path explicitly or place it in the project root "
+            "as 'IMDB Dataset.csv'."
+        )
+
     df = pd.read_csv(path)
     df = df.rename(columns={"review": "text", "sentiment": "label"})
+    missing_columns = {"text", "label"} - set(df.columns)
+    if missing_columns:
+        raise ValueError(f"Dataset is missing required columns: {sorted(missing_columns)}")
     return df[["text", "label"]]
 
 
@@ -68,8 +50,7 @@ def train_test_split_df(df: pd.DataFrame, test_size: float = 0.2, seed: int = 42
 
 
 if __name__ == "__main__":
-    # Quick sanity check
-    df = load_nltk_movie_reviews()
+    df = load_imdb_csv()
     print(f"Loaded {len(df)} documents")
     print(df["label"].value_counts())
     print(df.head(2))
