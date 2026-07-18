@@ -1,5 +1,7 @@
 pandas
 scikit-learn
+nltk
+joblib
 fastapi
 uvicorn
 python-multipart
