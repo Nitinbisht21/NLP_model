@@ -1,4 +1,5 @@
 import pandas as pd
+from sklearn.model_selection import train_test_split
 
 
 DATASET_FILE = "IMDB Dataset.csv"
@@ -17,7 +18,6 @@ def load_imdb_csv(file_path=DATASET_FILE):
 
 def split_data(df, test_size=0.2):
     """Split the dataset into training and testing data."""
-    from sklearn.model_selection import train_test_split
 
     text = df["text"]
     labels = df["label"]
