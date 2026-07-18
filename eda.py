@@ -19,7 +19,7 @@ def run_eda(df):
     print(df["word_count"].describe())
 
     print("\nCleaning first 200 reviews...")
-    cleaned_reviews = preprocess_series(df["text"].head(500))
+    cleaned_reviews = preprocess_series(df["text"].head(200))
     all_words = " ".join(cleaned_reviews).split()
     unique_words = set(all_words)
 

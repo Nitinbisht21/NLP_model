@@ -7,6 +7,7 @@ DATASET_FILE = "IMDB Dataset.csv"
 
 def load_imdb_csv(file_path=DATASET_FILE):
     """Load the IMDB dataset and return only the text and label columns."""
+    
     df = pd.read_csv(file_path)
 
     # Rename columns to simple project names.

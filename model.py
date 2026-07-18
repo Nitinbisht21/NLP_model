@@ -1,16 +1,3 @@
-"""
-model.py — Phase 2: Baseline Models
-
-Builds two classical ML baselines for sentiment classification:
-1. TF-IDF + Logistic Regression
-2. TF-IDF + Multinomial Naive Bayes
-
-Compares both and saves the better one for later use in the FastAPI app (Phase 4).
-
-Usage:
-    python model.py
-"""
-
 import time
 import joblib
 from sklearn.feature_extraction.text import TfidfVectorizer
