@@ -1,18 +1,3 @@
-"""
-main.py — Phase 4: FastAPI Backend
-
-Serves the trained sentiment model (Logistic Regression + TF-IDF from Phase 2)
-behind a REST API with two endpoints:
-
-  POST /predict  -> single text prediction
-  POST /batch    -> multiple texts at once (CSV upload)
-  GET  /docs     -> auto-generated interactive Swagger UI (built into FastAPI)
-
-Run locally with:
-    uvicorn main:app --reload
-
-Then open http://127.0.0.1:8000/docs in your browser to test it interactively.
-"""
 
 import joblib
 from fastapi import FastAPI, UploadFile, File, HTTPException
@@ -22,7 +7,7 @@ from pydantic import BaseModel
 import pandas as pd
 import io
 
-from preprocessing import clean_text
+from src.preprocessing import clean_text
 
 app = FastAPI(
     title="Movie Review Sentiment API",
@@ -38,11 +23,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Serve the simple frontend at /app (e.g. http://127.0.0.1:8000/app/index.html)
 app.mount("/app", StaticFiles(directory="static", html=True), name="static")
 
-# ---- Load the trained model + vectorizer once at startup (not on every request) ----
-# This avoids the huge overhead of reloading a 377KB+ file on every API call.
 try:
     model = joblib.load("logistic_regression_model.pkl")
     vectorizer = joblib.load("tfidf_vectorizer.pkl")
@@ -51,9 +33,6 @@ except FileNotFoundError:
     vectorizer = None
 
 
-# ---- Request/response schemas ----
-# Pydantic models define exactly what shape of JSON the API expects/returns.
-# FastAPI uses these to auto-validate incoming requests and auto-generate docs.
 class TextInput(BaseModel):
     text: str
 
@@ -102,12 +81,7 @@ def predict(input: TextInput):
 
 @app.post("/batch")
 async def batch_predict(file: UploadFile = File(...)):
-    """
-    Predicts sentiment for many reviews at once via CSV upload.
-    The CSV must have a column named 'text' or 'review'.
 
-    Returns a list of predictions, one per row.
-    """
     if model is None:
         raise HTTPException(status_code=503, detail="Model not loaded. Run model.py first to generate it.")
 

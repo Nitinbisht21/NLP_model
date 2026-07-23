@@ -5,43 +5,22 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 
-from data_loader import load_imdb_csv, split_data
-from preprocessing import preprocess_series
+from src.data_loader import load_imdb_csv, split_data
+from src.preprocessing import preprocess_series
 
 
 def build_tfidf_vectorizer(max_features: int = 10000) -> TfidfVectorizer:
-    """
-    Creates a TF-IDF vectorizer.
-
-    max_features=10000 -> keeps only the top 10,000 most informative words
-    (by TF-IDF score) across the corpus. This controls model size/speed and
-    reduces noise from very rare words.
-
-    ngram_range=(1,2) -> considers both single words ("good") and word pairs
-    ("not good") as features. This helps catch negation, which single words miss.
-    """
     return TfidfVectorizer(max_features=max_features, ngram_range=(1, 2))
 
 
 def train_logistic_regression(X_train_vec, y_train) -> LogisticRegression:
-    """
-    Trains a Logistic Regression classifier.
-
-    max_iter=1000 -> gives the optimizer enough iterations to converge on
-    high-dimensional TF-IDF vectors (default 100 often isn't enough and
-    throws a ConvergenceWarning).
-    """
     model = LogisticRegression(max_iter=1000)
     model.fit(X_train_vec, y_train)
     return model
 
 
 def train_naive_bayes(X_train_vec, y_train) -> MultinomialNB:
-    """
-    Trains a Multinomial Naive Bayes classifier.
-    Works well with TF-IDF/word-count style features and is very fast to train,
-    making it a good "sanity check" baseline against Logistic Regression.
-    """
+
     model = MultinomialNB()
     model.fit(X_train_vec, y_train)
     return model

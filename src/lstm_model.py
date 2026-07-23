@@ -1,17 +1,3 @@
-"""
-lstm_model.py — Phase 3: Deep Learning Model (LSTM)
-
-Builds a deep learning baseline using word embeddings + LSTM, and compares
-it against the Phase 2 classical ML baseline (TF-IDF + Logistic Regression).
-
-On your RTX 4050, TensorFlow will automatically use the GPU if
-tensorflow-gpu drivers/CUDA are set up correctly (check with
-tf.config.list_physical_devices('GPU')).
-
-Usage:
-    python lstm_model.py
-"""
-
 import time
 import numpy as np
 from tensorflow.keras.preprocessing.text import Tokenizer
@@ -34,17 +20,6 @@ BATCH_SIZE = 64
 
 
 def prepare_sequences(X_train, X_test):
-    """
-    Converts raw cleaned text into padded integer sequences the LSTM can read.
-
-    Tokenizer: builds a word->integer_id mapping from the training data only
-    (never fit on test data, to avoid data leakage — same principle as Phase 2's
-    TF-IDF fit_transform/transform split).
-
-    pad_sequences: makes every sequence exactly MAX_SEQUENCE_LEN long by
-    truncating longer reviews and zero-padding shorter ones — required because
-    neural networks need fixed-size input per batch.
-    """
     tokenizer = Tokenizer(num_words=MAX_VOCAB_SIZE, oov_token="<OOV>")
     tokenizer.fit_on_texts(X_train)
 
@@ -58,21 +33,6 @@ def prepare_sequences(X_train, X_test):
 
 
 def build_lstm_model(vocab_size: int) -> Sequential:
-    """
-    Builds the LSTM architecture:
-
-    1. Embedding layer  -> turns word IDs into dense 100-dim vectors, learned
-                            during training (words with similar sentiment end
-                            up with similar vectors).
-    2. LSTM layer        -> reads the sequence word-by-word, keeping a memory
-                            of context (so "not good" is understood differently
-                            than "good" alone — something TF-IDF can't do well).
-    3. Dropout           -> randomly "turns off" some neurons during training
-                            to prevent overfitting (the model memorizing
-                            training data instead of generalizing).
-    4. Dense(1, sigmoid) -> squashes the final output into a 0-1 probability
-                            (close to 1 = positive, close to 0 = negative).
-    """
     model = Sequential([
         Embedding(input_dim=vocab_size, output_dim=EMBEDDING_DIM, input_length=MAX_SEQUENCE_LEN),
         LSTM(LSTM_UNITS, dropout=0.2, recurrent_dropout=0.2),

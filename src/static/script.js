@@ -1,4 +1,4 @@
-const API_URL = "http://127.0.0.1:8000/predict"; // change this to your deployed API URL
+const API_URL = "http://127.0.0.1:8000/predict"; 
 
 async function checkSentiment(){
   const text = document.getElementById("reviewInput").value.trim();
