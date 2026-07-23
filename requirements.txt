@@ -2,12 +2,6 @@ pandas
 scikit-learn
 nltk
 joblib
-tensorflow
 fastapi
 uvicorn
 python-multipart
-uvicorn
-python-multipart
-matplotlib
-seaborn
-wordcloud

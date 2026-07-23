@@ -8,7 +8,5 @@ __pycache__/
 .ipynb_checkpoints/
  
 # Saved model artifacts (regenerate by re-running model.py / lstm_model.py)
-logistic_regression_model.pkl
-tfidf_vectorizer.pkl
 lstm_sentiment_model.keras
 lstm_tokenizer.pkl
