@@ -1,4 +1,4 @@
-const API_URL = "http://127.0.0.1:8000/predict"; 
+const API_URL = "https://nlp-model-2-q3ux.onrender.com/predict"; 
 
 async function checkSentiment(){
   const text = document.getElementById("reviewInput").value.trim();
