@@ -7,7 +7,7 @@ from pydantic import BaseModel
 import pandas as pd
 import io
 
-from src.preprocessing import clean_text
+from preprocessing import clean_text
 
 app = FastAPI(
     title="Movie Review Sentiment API",
