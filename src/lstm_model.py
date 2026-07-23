@@ -21,8 +21,8 @@ from tensorflow.keras.layers import Embedding, LSTM, Dense, Dropout
 from tensorflow.keras.callbacks import EarlyStopping
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 
-from data_loader import load_imdb_csv, split_data
-from preprocessing import preprocess_series
+from src.data_loader import load_imdb_csv, split_data
+from src.preprocessing import preprocess_series
 
 # ---- Config ----
 MAX_VOCAB_SIZE = 10000    # only consider the top 10,000 most frequent words

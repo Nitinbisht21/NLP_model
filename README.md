@@ -1,61 +1,43 @@
-# 🎬 SentiMind — Movie Review Sentiment Analysis
+🎬 SentiMind — Movie Review Sentiment Analysis
 
-An end-to-end NLP system that classifies movie reviews as **positive** or **negative**, comparing a classical machine learning approach against a deep learning approach — served through a FastAPI backend with a live web interface.
+An end-to-end NLP system that classifies movie reviews as positive or negative, comparing a classical machine learning approach against a deep learning approach — served through a FastAPI backend with a live web interface.
 
-Built as the second project in a portfolio sequence following [CineMatch](https://github.com/Nitinbisht21) (content-based movie recommender).
+Built as the second project in a portfolio sequence following CineMatch (content-based movie recommender).
 
----
-
-## 📌 Overview
+📌 Overview
 
 SentiMind takes raw, messy movie reviews (scraped from IMDB, complete with HTML tags and inconsistent formatting) and predicts sentiment using two different NLP approaches:
 
-1. **TF-IDF + Logistic Regression / Naive Bayes** — a classical ML baseline
-2. **LSTM with word embeddings** — a deep learning approach that understands word order and context
+TF-IDF + Logistic Regression / Naive Bayes — a classical ML baseline
+LSTM with word embeddings — a deep learning approach that understands word order and context
 
 The best-performing model is deployed behind a REST API, with a simple web UI for testing reviews live.
 
----
+✨ Features
+🧹 Full text preprocessing pipeline (HTML stripping, cleaning, stopword removal)
+📊 Exploratory data analysis (class balance, review length distribution, vocabulary size)
+🤖 Two independently trained models with a side-by-side accuracy comparison
+⚡ FastAPI backend with /predict (single review) and /batch (CSV upload) endpoints
+📄 Auto-generated interactive API docs (Swagger UI at /docs)
+🎨 Simple, themed web frontend to test predictions live
+📓 A simplified Jupyter notebook version for step-by-step learning
+🧠 Model Performance
+Model	Approach	Accuracy
+Logistic Regression	TF-IDF (1-2 grams)	89.35% ✅ (deployed)
+Naive Bayes	TF-IDF (1-2 grams)	86.03%
+LSTM	Word Embeddings	See lstm_model.py results
 
-## ✨ Features
+Why Logistic Regression is deployed: it matched or exceeded the deep learning approach's practical value for this dataset size, while being dramatically lighter and faster — a deliberate engineering trade-off between accuracy and deployment cost, not a limitation.
 
-- 🧹 Full text preprocessing pipeline (HTML stripping, cleaning, stopword removal)
-- 📊 Exploratory data analysis (class balance, review length distribution, vocabulary size)
-- 🤖 Two independently trained models with a side-by-side accuracy comparison
-- ⚡ FastAPI backend with `/predict` (single review) and `/batch` (CSV upload) endpoints
-- 📄 Auto-generated interactive API docs (Swagger UI at `/docs`)
-- 🎨 Simple, themed web frontend to test predictions live
-- 📓 A simplified Jupyter notebook version for step-by-step learning
-
----
-
-## 🧠 Model Performance
-
-| Model | Approach | Accuracy |
-|---|---|---|
-| Logistic Regression | TF-IDF (1-2 grams) | **89.35%** ✅ (deployed) |
-| Naive Bayes | TF-IDF (1-2 grams) | 86.03% |
-| LSTM | Word Embeddings | See `lstm_model.py` results |
-
-**Why Logistic Regression is deployed:** it matched or exceeded the deep learning approach's practical value for this dataset size, while being dramatically lighter and faster — a deliberate engineering trade-off between accuracy and deployment cost, not a limitation.
-
----
-
-## 🛠️ Tech Stack
-
-- **Language:** Python
-- **NLP:** NLTK / scikit-learn stopwords
-- **Classical ML:** scikit-learn (TF-IDF, Logistic Regression, Naive Bayes)
-- **Deep Learning:** TensorFlow / Keras (LSTM, Embedding layers)
-- **Backend:** FastAPI, Uvicorn
-- **Frontend:** HTML, CSS, JavaScript (vanilla, no framework)
-- **Model persistence:** joblib, Keras `.keras` format
-
----
-
-## 📂 Project Structure
-
-```
+🛠️ Tech Stack
+Language: Python
+NLP: NLTK / scikit-learn stopwords
+Classical ML: scikit-learn (TF-IDF, Logistic Regression, Naive Bayes)
+Deep Learning: TensorFlow / Keras (LSTM, Embedding layers)
+Backend: FastAPI, Uvicorn
+Frontend: HTML, CSS, JavaScript (vanilla, no framework)
+Model persistence: joblib, Keras .keras format
+📂 Project Structure
 NLP_model/
 ├── README.md
 ├── PRD_Sentiment_Analysis.md      # Product requirements & planning doc
@@ -75,75 +57,44 @@ NLP_model/
         ├── index.html
         ├── style.css
         └── script.js
-```
-
----
-
-## 🚀 Getting Started
-
-### 1. Clone the repo
-```bash
+🚀 Getting Started
+1. Clone the repo
+bash
 git clone https://github.com/Nitinbisht21/NLP_model.git
 cd NLP_model/src
-```
-
-### 2. Install dependencies
-```bash
+2. Install dependencies
+bash
 pip install -r ../requirements.txt
-```
+3. Get the dataset
 
-### 3. Get the dataset
-Download **[IMDB Dataset of 50K Movie Reviews](https://www.kaggle.com/datasets/lakshmi25npathi/imdb-dataset-of-50k-movie-reviews)** from Kaggle and place `IMDB Dataset.csv` inside the `src/` folder.
+Download IMDB Dataset of 50K Movie Reviews from Kaggle and place IMDB Dataset.csv inside the src/ folder.
 
-### 4. Explore the data (optional)
-```bash
+4. Explore the data (optional)
+bash
 python eda.py
-```
-
-### 5. Train the baseline model
-```bash
+5. Train the baseline model
+bash
 python model.py
-```
-This generates `logistic_regression_model.pkl` and `tfidf_vectorizer.pkl`, needed by the API.
 
-### 6. (Optional) Train the LSTM model
-```bash
+This generates logistic_regression_model.pkl and tfidf_vectorizer.pkl, needed by the API.
+
+6. (Optional) Train the LSTM model
+bash
 python lstm_model.py
-```
-
-### 7. Run the API
-```bash
+7. Run the API
+bash
 uvicorn main:app --reload
-```
+8. Try it out
+Web UI: http://127.0.0.1:8000/app/index.html
+API docs: http://127.0.0.1:8000/docs
+📓 Alternative: Jupyter Notebook
 
-### 8. Try it out
-- Web UI: [http://127.0.0.1:8000/app/index.html](http://127.0.0.1:8000/app/index.html)
-- API docs: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+For a simplified, all-in-one walkthrough (great for learning or quick experimentation), see sentiment_lstm_simple.ipynb in the repo root.
 
----
-
-## 📓 Alternative: Jupyter Notebook
-
-For a simplified, all-in-one walkthrough (great for learning or quick experimentation), see `sentiment_lstm_simple.ipynb` in the repo root.
-
----
-
-## 🔮 Future Enhancements
-
-- Fine-tune a transformer model (DistilBERT) and compare against LSTM
-- Aspect-based sentiment analysis (e.g., "acting was great but the plot was weak")
-- Deploy both models side-by-side with a live comparison endpoint
-- Real-time Twitter/Reddit API integration
-
----
-
-## 📄 License
+📄 License
 
 This project is open source and available for learning purposes.
 
----
+🙋 Author
 
-## 🙋 Author
-
-**Nitin Bisht** — B.Tech CSE (AI & ML), Swami Rama Himalayan University
-Part of an ongoing ML portfolio: CineMatch → **SentiMind** → (next: Computer Vision project)
+Nitin Bisht — B.Tech CSE (AI & ML), Swami Rama Himalayan University.
